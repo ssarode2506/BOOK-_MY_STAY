@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 abstract class Room {
 
     protected int numberOfBeds;
@@ -37,34 +39,60 @@ class SuiteRoom extends Room {
         super(3, 750, 5000.0);
     }
 }
+class RoomInventory {
+    private Map<String, Integer> roomAvailability;
+
+    public RoomInventory() {
+        roomAvailability = new HashMap<>();
+        initializeInventory();
+    }
+
+    private void initializeInventory() {
+        roomAvailability.put("Single", 5);
+        roomAvailability.put("Double", 3);
+        roomAvailability.put("Suite", 2);
+    }
+
+    public Map<String, Integer> getRoomAvailability() {
+        return roomAvailability;
+    }
+
+    public void updateAvailability(String roomType, int count) {
+        roomAvailability.put(roomType, count);
+    }
+
+
+}
 
 // Main Class
 public class HotelManagementSystem {
-
     public static void main(String[] args) {
 
-        System.out.println("Hotel Room Initialization\n");
+        RoomInventory inventory = new RoomInventory();
 
-        Room singleRoom = new SingleRoom();
+        Room single = new SingleRoom();
         Room doubleRoom = new DoubleRoom();
-        Room suiteRoom = new SuiteRoom();
+        Room suite = new SuiteRoom();
 
-        int singleAvailable = 5;
-        int doubleAvailable = 3;
-        int suiteAvailable = 2;
+        System.out.println("Hotel Room Inventory Status\n");
 
         System.out.println("Single Room:");
-        singleRoom.displayRoomDetails();
-        System.out.println("Available: " + singleAvailable);
+        single.displayRoomDetails();
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Single"));
+
         System.out.println();
 
         System.out.println("Double Room:");
         doubleRoom.displayRoomDetails();
-        System.out.println("Available: " + doubleAvailable);
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Double"));
+
         System.out.println();
 
         System.out.println("Suite Room:");
-        suiteRoom.displayRoomDetails();
-        System.out.println("Available: " + suiteAvailable);
+        suite.displayRoomDetails();
+        System.out.println("Available Rooms: " +
+                inventory.getRoomAvailability().get("Suite"));
     }
 }
